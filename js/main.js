@@ -31,7 +31,7 @@ const CHECK_IN_OR_OUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const DISCRIPTION = ['отличный вид', 'в центре города'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-
+const NUMBER_OF_OBJECTS = 10;
 //Создание объекта
 const creatObject = function () {
   const ZERO_STRING = '0';
@@ -60,5 +60,6 @@ const creatObject = function () {
     location:LOCATION,
   };
 };
-const creatManyObjects = Array.from({length:10}, creatObject);
+// Массив из объектов "creatObject"
+const creatManyObjects = Array.from({length:NUMBER_OF_OBJECTS}, creatObject);
 creatManyObjects();
