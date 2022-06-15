@@ -18,49 +18,47 @@ const getRandomArrayElement = function(elements) {
 };
 // Функция массива случайной длины
 const getRandomArrayLength = function (array) {
-  const lengthArray = getRandomPositiveInteger(0,array.length);
-  const newArray = [];
-  for (let i = 0; i < lengthArray; i++) {
-    newArray.push(array[i]);
-  }
-  return newArray;
+  const lengthArray = getRandomPositiveInteger(0,array.length-1);
+  return array.slice(0,lengthArray);
 };
 // Переменные
 const TITLE = ['Сдам дешево','В хорошие руки','Для молодожен','Отдыхайте весело'];
-const PRICE = [1000,2000,5000,7772];
+const PRICE = getRandomPositiveInteger(1000,50000);
 const TYPE = ['palace','flat','house','bungalow','hotel'];
-const ROOMS = [1,2,3,4];
-const GUESTS = [1,2,3];
-const CHECKIN = ['12:00', '13:00', '14:00'];
-const CHECKOUT = ['12:00', '13:00', '14:00'];
+const ROOMS = getRandomPositiveInteger(1,5);
+const GUESTS = getRandomPositiveInteger(0,10);
+const CHECK_IN_OR_OUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 const DISCRIPTION = ['отличный вид', 'в центре города'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 
 //Создание объекта
 const creatObject = function () {
+  const ZERO_STRING = '0';
+  const RANDOM_INDEX = getRandomPositiveInteger(1,10);
+  const LOCATION ={
+    lat:getRandomPositiveFloat(35.65, 35.7, 5),
+    lng:getRandomPositiveFloat(139.7, 139.8, 5)
+  };
   return {
     author:{
-      avatar:''
+      avatar:`img/avatars/user${RANDOM_INDEX === 10 ? RANDOM_INDEX : ZERO_STRING + RANDOM_INDEX}.png`
     },
     offer:{
       title:getRandomArrayElement(TITLE),
-      address:'',
-      price:getRandomArrayElement(PRICE),
+      address:`${LOCATION.lat}, ${LOCATION.lng}`,
+      price:PRICE,
       type:getRandomArrayElement(TYPE),
-      rooms:getRandomArrayElement(ROOMS),
-      guests:getRandomArrayElement(GUESTS),
-      checkin:getRandomArrayElement(CHECKIN),
-      checkout:getRandomArrayElement(CHECKOUT),
+      rooms:ROOMS,
+      guests:GUESTS,
+      checkin:getRandomArrayElement(CHECK_IN_OR_OUT),
+      checkout:getRandomArrayElement(CHECK_IN_OR_OUT),
       features:getRandomArrayLength(FEATURES),
       description:getRandomArrayElement(DISCRIPTION),
       photos:getRandomArrayLength(PHOTOS)
     },
-    location:{
-      lat:getRandomPositiveFloat(35.65000,35.70000,5),
-      lng:getRandomPositiveFloat(139.70000,139.80000,5)
-    }
+    location:LOCATION,
   };
 };
-
-creatObject();
+const creatManyObjects = Array.from({length:10}, creatObject);
+creatManyObjects();
