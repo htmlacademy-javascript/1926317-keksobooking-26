@@ -13,7 +13,6 @@ const typeOfHousingCollection = {
 
 creatManyObjects().forEach((arrayOfObjects) =>{
   const card = template.cloneNode(true);
-  const typeRandom = arrayOfObjects.offer.type;
   const featuresRandom = arrayOfObjects.offer.features;
   const popupFeatures = card.querySelector('.popup__features');
   const popupFeature = popupFeatures.querySelectorAll('.popup__feature');
@@ -23,26 +22,21 @@ creatManyObjects().forEach((arrayOfObjects) =>{
   photosRandom.forEach((picture) => {
     const photoClone = photo.cloneNode(true);
     photoClone.src = picture;
-    photos.append(photoClone);
+    photos.appendChild(photoClone);
   });
+  photo.remove('popup__photo');
+  if (!photosRandom.length){photos.classList.add('hidden');}
   popupFeature.forEach((popupFeatureItem)=>{
     const isReal = featuresRandom.some((feature)=> popupFeatureItem.classList.contains(`popup__feature--${feature}`));
     if (!isReal){
       popupFeatureItem.remove();
     }
+    if(!featuresRandom.length){popupFeatures.classList.add('hidden');}
   });
-  const toTranslateHousing  = function (word){
-    word=typeRandom;
-    if (word==='flat'){return typeOfHousingCollection['flat'];}
-    if (word==='bungalow'){return typeOfHousingCollection['bungalow'];}
-    if (word==='house'){return typeOfHousingCollection['house'];}
-    if (word==='palace'){return typeOfHousingCollection['palace'];}
-    if (word==='hotel'){return typeOfHousingCollection['hotel'];}
-  };
   card.querySelector('.popup__title').textContent = arrayOfObjects.offer.title;
   card.querySelector('.popup__text--address').textContent = arrayOfObjects.offer.address;
   card.querySelector('.popup__text--price').textContent = `${arrayOfObjects.offer.price} ₽/ночь`;
-  card.querySelector('.popup__type').textContent = toTranslateHousing();
+  card.querySelector('.popup__type').textContent = typeOfHousingCollection[arrayOfObjects.offer.type];
   card.querySelector('.popup__text--capacity').textContent = `${arrayOfObjects.offer.rooms} комнаты для ${arrayOfObjects.offer.guests} гостей`;
   card.querySelector('.popup__text--time').textContent = `Заезд после ${arrayOfObjects.offer.checkin}, выезд до ${arrayOfObjects.offer.checkout}`;
   card.querySelector('.popup__description').textContent = arrayOfObjects.offer.description;
