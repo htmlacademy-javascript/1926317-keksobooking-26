@@ -4,9 +4,9 @@ const TITLE = ['Сдам дешево','В хорошие руки','Для мо
 const TYPE = ['palace','flat','house','bungalow','hotel'];
 const CHECK_IN_OR_OUT = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const DISCRIPTION = ['отличный вид', 'в центре города'];
+const DESCRIPTION = ['отличный вид', 'в центре города'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
-const NUMBER_OF_OBJECTS = 10;
+const NUMBER_OF_OBJECTS = 1;
 //Создание объекта
 const creatObject = function () {
   const ZERO_STRING = '0';
@@ -32,7 +32,7 @@ const creatObject = function () {
       checkin:getRandomArrayElement(CHECK_IN_OR_OUT),
       checkout:getRandomArrayElement(CHECK_IN_OR_OUT),
       features:getRandomArrayLength(FEATURES),
-      description:getRandomArrayElement(DISCRIPTION),
+      description:getRandomArrayElement(DESCRIPTION),
       photos:getRandomArrayLength(PHOTOS)
     },
     location:LOCATION,
