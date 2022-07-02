@@ -85,7 +85,7 @@ noticeForm.addEventListener('submit', (evt) => {
   pristine.validate();
 });
 
-//функция отключения форм
+//функция отключения формы
 const toDisableForm = function () {
   noticeForm.classList.add('ad-form--disabled');
   for (const element of noticeFormElements) {
@@ -98,7 +98,7 @@ const toDisableForm = function () {
 };
 toDisableForm();
 
-//функция включения форм
+//функция включения формы
 const toAbleForm = function() {
   noticeForm.classList.remove('ad-form--disabled');
   for (const element of noticeFormElements) {
