@@ -1,6 +1,4 @@
-import {creatManyObjects} from './data.js';
 
-const cardList = document.querySelector('#map-canvas');
 const template = document.querySelector('#card').content.querySelector('.popup');
 const typeOfHousingCollection = {
   'flat': 'Квартира',
@@ -11,7 +9,7 @@ const typeOfHousingCollection = {
 };
 
 
-creatManyObjects().forEach((arrayOfObjects) =>{
+const creatPopup = (arrayOfObjects) =>{
   const card = template.cloneNode(true);
   const featuresRandom = arrayOfObjects.offer.features;
   const popupFeatures = card.querySelector('.popup__features');
@@ -41,7 +39,7 @@ creatManyObjects().forEach((arrayOfObjects) =>{
   card.querySelector('.popup__text--time').textContent = `Заезд после ${arrayOfObjects.offer.checkin}, выезд до ${arrayOfObjects.offer.checkout}`;
   card.querySelector('.popup__description').textContent = arrayOfObjects.offer.description;
   card.querySelector('.popup__avatar').src = arrayOfObjects.author.avatar;
-  cardList.appendChild(card);
-});
+  return card;
+};
 
-
+export {creatPopup};

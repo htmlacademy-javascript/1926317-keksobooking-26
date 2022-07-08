@@ -4,6 +4,7 @@ const mapFilterForm = document.querySelector('.map__filters');//форма фи�
 const mapFilterFormElements = mapFilterForm.children;//дети формы фильтрация объявлений
 const price = noticeForm.querySelector('#price');
 const typeOfHousing = document.querySelector('#type');
+const priceSlider = document.querySelector('.ad-form__slider');
 const typeOfHousingPrice = {
   palace: 10000,
   flat: 1000,
@@ -51,7 +52,9 @@ const pristine = new Pristine(noticeForm, {
 
 //проверка валидности "Заголовок объявления"
 function validateTitleNotice (value) {
-  return value.length >= 30 && value.length <= 100;
+  const minValue = 30;
+  const maxValue = 100;
+  return value.length >= minValue && value.length <= maxValue;
 }
 
 pristine.addValidator(noticeForm.querySelector('#title'),validateTitleNotice);
@@ -107,6 +110,18 @@ noticeForm.addEventListener('submit', (evt) => {
   {evt.preventDefault();}
 });
 
+// функция включения формы
+const toAbleForm = function() {
+  noticeForm.classList.remove('ad-form--disabled');
+  for (const element of noticeFormElements) {
+    element.disabled = false;
+  }
+  mapFilterForm.classList.remove('map__filters--disabled');
+  for (const element of mapFilterFormElements){
+    element.disabled = false;
+  }
+};
+
 //функция отключения формы
 const toDisableForm = function () {
   noticeForm.classList.add('ad-form--disabled');
@@ -118,17 +133,23 @@ const toDisableForm = function () {
     element.disabled = true;
   }
 };
-toDisableForm();
 
-//функция включения формы
-const toAbleForm = function() {
-  noticeForm.classList.remove('ad-form--disabled');
-  for (const element of noticeFormElements) {
-    element.disabled = false;
-  }
-  mapFilterForm.classList.remove('map__filters--disabled');
-  for (const element of mapFilterFormElements){
-    element.disabled = false;
-  }
-};
-toAbleForm();
+toDisableForm();
+export {toAbleForm};
+//слайдер
+noUiSlider.create(priceSlider, {
+  range: {
+    min:Number(price.min),
+    max:Number(price.max),
+  },
+  start:Number(typeOfHousingPrice[typeOfHousing.value]),
+  step:10,
+  connect:'upper',
+});
+priceSlider.noUiSlider.on('slide', () => {
+  price.value = Number(priceSlider.noUiSlider.get());
+  pristine.validate();
+});
+price.addEventListener('change', (evt) => {
+  priceSlider.noUiSlider.set(Number(evt.target.value));
+});
