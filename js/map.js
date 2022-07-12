@@ -1,10 +1,8 @@
 import {toAbleForm} from './form.js';//импортирую функцию активации формы
-import {creatManyObjects} from './data.js';
 import {creatPopup} from './popup.js';
 const resetButton = document.querySelector('.ad-form__reset');
 const tokioLatDefault = 35.6895;//Координаты Токио
 const tokioLngDefault = 139.692;//Координаты Токио
-const arrayOfObjects = creatManyObjects();//массив для объявлений
 const scaleGlobal = 10;
 const scaleLocal = 18;
 //настройки карты
@@ -67,18 +65,29 @@ resetButton.addEventListener('click', () => {
     lng: tokioLngDefault,
   }, scaleLocal);
 });
-// marker.remove();
 
-//фигачу много маркеров
-arrayOfObjects.forEach((element,index)=>{
+//Много маркеров
+const markerGroup = L.layerGroup().addTo(map);
+
+const createMarker = (element)=>{
   const marker = L.marker({
-    lat:arrayOfObjects[index].location.lat,
-    lng:arrayOfObjects[index].location.lng
+    lat:element.location.lat,
+    lng:element.location.lng
   },
   {
     icon: pinIcon,
   });
 
-  marker.addTo(map).bindPopup(creatPopup(element));//эта штука делает попап(балун) на маркере
-});
+  marker
+    .addTo(markerGroup)
+    .bindPopup(creatPopup(element));//эта штука делает попап(балун) на маркере
+};
 
+const renderCards = (elements) => {
+  elements.forEach((element) => {
+    createMarker(element);
+  });
+};
+
+export {renderCards};
+// markerGroup.clearLayers();//очищает слой маркеров

@@ -1,3 +1,4 @@
+import {sendData} from './api.js';
 const noticeForm = document.querySelector('.ad-form');//Форма объявления
 const noticeFormElements = noticeForm.children;//дети Формы объявления
 const mapFilterForm = document.querySelector('.map__filters');//форма фильтрация объявлений
@@ -5,6 +6,13 @@ const mapFilterFormElements = mapFilterForm.children;//дети формы фи�
 const price = noticeForm.querySelector('#price');
 const typeOfHousing = document.querySelector('#type');
 const priceSlider = document.querySelector('.ad-form__slider');
+const onButtonSubmit = noticeForm.querySelector('.ad-form__submit');
+const success = document.querySelector('#success')
+  .content.querySelector('.success');
+const error = document.querySelector('#error')
+  .content.querySelector('.error');
+const buttonError = error.querySelector('.error__button');
+const body = document.querySelector('body');
 const typeOfHousingPrice = {
   palace: 10000,
   flat: 1000,
@@ -105,11 +113,6 @@ function validateTime () {
 
 pristine.addValidator(timeOut, validateTime);
 
-noticeForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate())
-  {evt.preventDefault();}
-});
-
 // функция включения формы
 const toAbleForm = function() {
   noticeForm.classList.remove('ad-form--disabled');
@@ -135,14 +138,14 @@ const toDisableForm = function () {
 };
 
 toDisableForm();
-export {toAbleForm};
+
 //слайдер
 noUiSlider.create(priceSlider, {
   range: {
     min:Number(price.min),
     max:Number(price.max),
   },
-  start:Number(typeOfHousingPrice[typeOfHousing.value]),
+  start:Number(price.placeholder),
   step:10,
   connect:'upper',
 });
@@ -153,3 +156,48 @@ priceSlider.noUiSlider.on('slide', () => {
 price.addEventListener('change', (evt) => {
   priceSlider.noUiSlider.set(Number(evt.target.value));
 });
+
+//функция об успешной отправке
+const getSuccessMessage = () => {
+  const successMessage = success.cloneNode(true);
+  body.appendChild(successMessage);
+  document.addEventListener('click', () => {
+    successMessage.remove();
+  });
+  document.addEventListener('keydown',(evt) => {
+    if (evt.key === 'Escape') {
+      successMessage.remove();
+    }
+  });
+  noticeForm.reset();
+  onButtonSubmit.disabled = false;
+};
+//функция об НЕуспешной отправке
+const getErrorMessage = () => {
+  const errorMessage = error.cloneNode(true);
+  body.appendChild(errorMessage);
+  document.addEventListener('click', () => {
+    errorMessage.remove();
+  });
+  document.addEventListener('keydown',(evt) => {
+    if (evt.key === 'Escape') {
+      errorMessage.remove();
+    }
+  });
+  buttonError.querySelector('click', () => {
+    errorMessage.remove();
+  });
+  onButtonSubmit.disabled = false;
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  noticeForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      onButtonSubmit.disabled = true;
+      sendData(() => onSuccess(),getErrorMessage,new FormData(evt.target),);
+    }
+  });
+};
+export {toAbleForm, setUserFormSubmit, getSuccessMessage};
