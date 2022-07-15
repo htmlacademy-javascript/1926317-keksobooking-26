@@ -113,32 +113,28 @@ function validateTime () {
 
 pristine.addValidator(timeOut, validateTime);
 
-// функция включения формы
-const toAbleForm = function() {
-  noticeForm.classList.remove('ad-form--disabled');
-  for (const element of noticeFormElements) {
-    element.disabled = false;
-  }
-  mapFilterForm.classList.remove('map__filters--disabled');
-  for (const element of mapFilterFormElements){
-    element.disabled = false;
+//функция аткивации формы
+const activateForm = (isActiveForm) => {
+  if (isActiveForm) {
+    noticeForm.classList.remove('ad-form--disabled');
+    for (const element of noticeFormElements) {
+      element.disabled = false;
+    }
+    mapFilterForm.classList.remove('map__filters--disabled');
+    for (const element of mapFilterFormElements) {
+      element.disabled = false;
+    }
+  } else {
+    noticeForm.classList.add('ad-form--disabled');
+    for (const element of noticeFormElements) {
+      element.disabled = true;
+    }
+    mapFilterForm.classList.add('map__filters--disabled');
+    for (const element of mapFilterFormElements) {
+      element.disabled = true;
+    }
   }
 };
-
-//функция отключения формы
-const toDisableForm = function () {
-  noticeForm.classList.add('ad-form--disabled');
-  for (const element of noticeFormElements) {
-    element.disabled = true;
-  }
-  mapFilterForm.classList.add('map__filters--disabled');
-  for (const element of mapFilterFormElements){
-    element.disabled = true;
-  }
-};
-
-toDisableForm();
-
 //слайдер
 noUiSlider.create(priceSlider, {
   range: {
@@ -200,4 +196,4 @@ const setUserFormSubmit = (onSuccess) => {
     }
   });
 };
-export {toAbleForm, setUserFormSubmit, getSuccessMessage};
+export {activateForm, setUserFormSubmit, getSuccessMessage};
