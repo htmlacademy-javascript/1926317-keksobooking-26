@@ -1,20 +1,21 @@
-import {toAbleForm} from './form.js';//импортирую функцию активации формы
-import {creatPopup} from './popup.js';
+import {creatCards} from './popup.js';
 const resetButton = document.querySelector('.ad-form__reset');
-const tokioLatDefault = 35.6895;//Координаты Токио
-const tokioLngDefault = 139.692;//Координаты Токио
-const scaleGlobal = 10;
-const scaleLocal = 18;
+const map = L.map('map-canvas');
+const LAT_DEFAULT = 35.68951;//Координаты Токио
+const LNG_DEFAULT = 139.69201;//Координаты Токио
+const SCALE_GLOBAL = 10;
+const SCALE_LOCAL = 18;
 //настройки карты
-const map = L.map('map-canvas')
-  .on('load', () => {//обработчик активации формы
-    toAbleForm();
-  })
-  .setView({
-    lat: tokioLatDefault,
-    lng: tokioLngDefault,
-  }, scaleGlobal);
-
+const loadMap = (form) => {
+  map
+    .on('load', () => {//обработчик активации формы
+      form(true);
+    })
+    .setView({
+      lat: LAT_DEFAULT,
+      lng: LNG_DEFAULT,
+    }, SCALE_GLOBAL);
+};
 const tiles = L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   {
@@ -37,8 +38,8 @@ const pinIcon = L.icon({
 //основной маркера
 const mainMarker = L.marker(
   {
-    lat: tokioLatDefault,
-    lng: tokioLngDefault,
+    lat: LAT_DEFAULT,
+    lng: LNG_DEFAULT,
   },
   {
     draggable: true,//разрешение на перемещение маркера
@@ -49,21 +50,23 @@ const mainMarker = L.marker(
 tiles.addTo(map);//добавление каких то тайлов
 mainMarker.addTo(map);//добавление маркера
 mainMarker.on('moveend', (evt) => {//обработчик по перемещению (запомниает ширину и долготу)
-  const afterPoint = 4;
+  const afterPoint = 5;
   const lat = evt.target.getLatLng().lat.toFixed(afterPoint);
   const lng = evt.target.getLatLng().lng.toFixed(afterPoint);
-  document.querySelector('#address').value = `LatLng(${lat}, ${lng})`;
+  document.querySelector('#address').value = `${lat}, ${lng}`;
 });
+
 
 resetButton.addEventListener('click', () => {
   mainMarker.setLatLng({//возвращаю маркер на исходную по клику на "Очистить"
-    lat: tokioLatDefault,
-    lng: tokioLngDefault,
+    lat: LAT_DEFAULT,
+    lng: LNG_DEFAULT,
   });
   map.setView({
-    lat: tokioLatDefault,
-    lng: tokioLngDefault,
-  }, scaleLocal);
+    lat: LAT_DEFAULT,
+    lng: LNG_DEFAULT,
+  }, SCALE_LOCAL);
+  map.closePopup();
 });
 
 //Много маркеров
@@ -80,7 +83,9 @@ const createMarker = (element)=>{
 
   marker
     .addTo(markerGroup)
-    .bindPopup(creatPopup(element));//эта штука делает попап(балун) на маркере
+    .bindPopup(creatCards(element));//эта штука делает попап(балун) на маркере
+
+
 };
 
 const renderCards = (elements) => {
@@ -89,5 +94,7 @@ const renderCards = (elements) => {
   });
 };
 
-export {renderCards};
-// markerGroup.clearLayers();//очищает слой маркеров
+const clearMarkers = () => {
+  markerGroup.clearLayers();
+};
+export {renderCards, clearMarkers, loadMap};

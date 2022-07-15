@@ -8,8 +8,7 @@ const typeOfHousingCollection = {
   hotel: 'Отель'
 };
 
-
-const creatPopup = (data) => {
+const creatCards = (data) => {
   const card = template.cloneNode(true);
   const featuresRandom = data.offer.features;
   const popupFeatures = card.querySelector('.popup__features');
@@ -55,4 +54,4 @@ const creatPopup = (data) => {
   return card;
 };
 
-export {creatPopup};
+export {creatCards};
