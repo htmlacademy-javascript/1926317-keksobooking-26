@@ -1,4 +1,8 @@
 import {sendData} from './api.js';
+import {clearMarkers} from './map.js';
+const AVATAR_DEFAULT = 'img/muffin-grey.svg';
+const previewAvatar = document.querySelector('.ad-form-header__avatar');
+const previewPhoto = document.querySelector('.ad-form__photo');
 const noticeForm = document.querySelector('.ad-form');//Форма объявления
 const noticeFormElements = noticeForm.children;//дети Формы объявления
 const mapFilterForm = document.querySelector('.map__filters');//форма фильтрация объявлений
@@ -166,7 +170,12 @@ const getSuccessMessage = () => {
     }
   });
   noticeForm.reset();
+  mapFilterForm.reset();
+  previewAvatar.src = AVATAR_DEFAULT;
+  previewPhoto.innerHTML = '';
   onButtonSubmit.disabled = false;
+  priceSlider.noUiSlider.reset();
+  clearMarkers();
 };
 //функция об НЕуспешной отправке
 const getErrorMessage = () => {

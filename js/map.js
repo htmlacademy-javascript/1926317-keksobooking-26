@@ -1,5 +1,11 @@
 import {creatCards} from './popup.js';
+const AVATAR_DEFAULT = 'img/muffin-grey.svg';
 const resetButton = document.querySelector('.ad-form__reset');
+const priceSlider = document.querySelector('.ad-form__slider');
+const previewPhoto = document.querySelector('.ad-form__photo');
+const previewAvatar = document.querySelector('.ad-form-header__avatar');
+const noticeForm = document.querySelector('.ad-form');
+const mapFilterForm = document.querySelector('.map__filters');
 const map = L.map('map-canvas');
 const LAT_DEFAULT = 35.68951;//Координаты Токио
 const LNG_DEFAULT = 139.69201;//Координаты Токио
@@ -56,19 +62,6 @@ mainMarker.on('moveend', (evt) => {//обработчик по перемеще�
   document.querySelector('#address').value = `${lat}, ${lng}`;
 });
 
-
-resetButton.addEventListener('click', () => {
-  mainMarker.setLatLng({//возвращаю маркер на исходную по клику на "Очистить"
-    lat: LAT_DEFAULT,
-    lng: LNG_DEFAULT,
-  });
-  map.setView({
-    lat: LAT_DEFAULT,
-    lng: LNG_DEFAULT,
-  }, SCALE_LOCAL);
-  map.closePopup();
-});
-
 //Много маркеров
 const markerGroup = L.layerGroup().addTo(map);
 
@@ -97,4 +90,22 @@ const renderCards = (elements) => {
 const clearMarkers = () => {
   markerGroup.clearLayers();
 };
+
+resetButton.addEventListener('click', () => {
+  mainMarker.setLatLng({//возвращаю маркер на исходную по клику на "Очистить"
+    lat: LAT_DEFAULT,
+    lng: LNG_DEFAULT,
+  });
+  map.setView({
+    lat: LAT_DEFAULT,
+    lng: LNG_DEFAULT,
+  }, SCALE_LOCAL);
+  map.closePopup();
+  noticeForm.reset();
+  mapFilterForm.reset();
+  previewAvatar.src = AVATAR_DEFAULT;
+  previewPhoto.innerHTML = '';
+  priceSlider.noUiSlider.reset();
+  clearMarkers();
+});
 export {renderCards, clearMarkers, loadMap};

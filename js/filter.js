@@ -20,10 +20,6 @@ const priceRange = {
 };
 const toFilteredMap = (data) => {
   const mapFilterFeatures = mapFilters.querySelector('#housing-features').querySelectorAll('input:checked');
-  const toFilterType = () => mapFilterType.value === VALUE_DEFAULT||data.offer.type === mapFilterType.value;
-  const toFilterPrice = () => mapFilterPrice.value === VALUE_DEFAULT||(data.offer.price >= priceRange[mapFilterPrice.value].min && data.offer.price <= priceRange[mapFilterPrice.value].max);
-  const toFilterRooms = () => mapFilterRooms.value === VALUE_DEFAULT||data.offer.rooms === Number(mapFilterRooms.value);
-  const toFilterGuests = () => mapFilterGuests.value === VALUE_DEFAULT||data.offer.guests === Number(mapFilterGuests.value);
   const toFilterFeatures = () => {
     if (mapFilterFeatures.length) {
       if (data.offer.features) {
@@ -33,6 +29,10 @@ const toFilteredMap = (data) => {
       return mapFilterFeatures.length === 0;
     }
   };
-  return toFilterType(data,mapFilterType)&&toFilterPrice(data,mapFilterPrice)&&toFilterRooms(data,mapFilterRooms)&&toFilterGuests(data,mapFilterGuests)&&toFilterFeatures(data,mapFilterFeatures);
+  return (mapFilterType.value === VALUE_DEFAULT||data.offer.type === mapFilterType.value)&&
+  (mapFilterPrice.value === VALUE_DEFAULT||(data.offer.price >= priceRange[mapFilterPrice.value].min && data.offer.price <= priceRange[mapFilterPrice.value].max))&&
+  (mapFilterRooms.value === VALUE_DEFAULT||data.offer.rooms === Number(mapFilterRooms.value))&&
+  (mapFilterGuests.value === VALUE_DEFAULT||data.offer.guests === Number(mapFilterGuests.value))&&
+  toFilterFeatures(data,mapFilterFeatures);
 };
-export {toFilteredMap, mapFilters};
+export {toFilteredMap};
