@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
-import {clearMarkers} from './map.js';
+import {clearMarkers, renderCards} from './map.js';
+import {getData} from './api.js';
 const AVATAR_DEFAULT = 'img/muffin-grey.svg';
 const previewAvatar = document.querySelector('.ad-form-header__avatar');
 const previewPhoto = document.querySelector('.ad-form__photo');
@@ -17,6 +18,7 @@ const error = document.querySelector('#error')
   .content.querySelector('.error');
 const buttonError = error.querySelector('.error__button');
 const body = document.querySelector('body');
+const VALUE_OF_OBJECT = 10;
 const typeOfHousingPrice = {
   palace: 10000,
   flat: 1000,
@@ -174,8 +176,12 @@ const getSuccessMessage = () => {
   previewAvatar.src = AVATAR_DEFAULT;
   previewPhoto.innerHTML = '';
   onButtonSubmit.disabled = false;
+  price.placeholder = typeOfHousingPrice[typeOfHousing.value];
   priceSlider.noUiSlider.reset();
   clearMarkers();
+  getData ((data)=> {
+    renderCards(data.slice(0,VALUE_OF_OBJECT));
+  });
 };
 //функция об НЕуспешной отправке
 const getErrorMessage = () => {
