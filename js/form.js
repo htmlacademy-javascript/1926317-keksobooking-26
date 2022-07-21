@@ -65,11 +65,11 @@ const pristine = new Pristine(noticeForm, {
 });
 
 //проверка валидности "Заголовок объявления"
-function validateTitleNotice (value) {
+const validateTitleNotice = (value) => {
   const minValue = 30;
   const maxValue = 100;
   return value.length >= minValue && value.length <= maxValue;
-}
+};
 
 pristine.addValidator(noticeForm.querySelector('#title'),validateTitleNotice);
 
@@ -81,23 +81,17 @@ typeOfHousing.addEventListener('change', () => {
   price.value = '';
 });
 
-function validatePrice (value) {
-  return value <= maxPrice[typeOfHousing.value] && value>=typeOfHousingPrice[typeOfHousing.value];
-}
-function getPriceErrorMessage (){
-  return `не менее ${typeOfHousingPrice[typeOfHousing.value]} и не более ${maxPrice[typeOfHousing.value]}`;
-}
+const validatePrice = (value) => value <= maxPrice[typeOfHousing.value] && value>=typeOfHousingPrice[typeOfHousing.value];
+
+const getPriceErrorMessage = () => `не менее ${typeOfHousingPrice[typeOfHousing.value]} и не более ${maxPrice[typeOfHousing.value]}`;
+
 pristine.addValidator(price, validatePrice, getPriceErrorMessage);
 
 //проверка валидности "Количество комнат и количество мест"
 
-function validateCapacity () {
-  return possibleCapacity[roomNumber.value].includes(capacityGuests.value);
-}
+const validateCapacity = () => possibleCapacity[roomNumber.value].includes(capacityGuests.value);
 
-function getCapacityErrorMessage () {
-  return `${roomNumber.value} ${words[roomNumber.value].room} ${words[roomNumber.value].guest}`;
-}
+const getCapacityErrorMessage = () => `${roomNumber.value} ${words[roomNumber.value].room} ${words[roomNumber.value].guest}`;
 
 pristine.addValidator(roomNumber, validateCapacity);
 pristine.addValidator(capacityGuests, validateCapacity, getCapacityErrorMessage);
@@ -113,9 +107,7 @@ timeOut.addEventListener('change', () => {
   pristine.validate();
 });
 
-function validateTime () {
-  return  timeIn.value === timeOut.value;
-}
+const validateTime = () => timeIn.value === timeOut.value;
 
 pristine.addValidator(timeOut, validateTime);
 
@@ -201,13 +193,29 @@ const getErrorMessage = () => {
   onButtonSubmit.disabled = false;
 };
 
+const blockSubmitButton = () => {
+  onButtonSubmit.disabled = true;
+  onButtonSubmit.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  onButtonSubmit.disabled = false;
+  onButtonSubmit.textContent = 'Опубликовать';
+};
+
 const setUserFormSubmit = (onSuccess) => {
   noticeForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      onButtonSubmit.disabled = true;
-      sendData(() => onSuccess(),getErrorMessage,new FormData(evt.target),);
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+        },
+        getErrorMessage,
+        new FormData(evt.target),);
     }
   });
 };

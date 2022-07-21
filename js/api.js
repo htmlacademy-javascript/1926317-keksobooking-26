@@ -1,4 +1,5 @@
 import {showAlert} from './util.js';
+
 const getData = (onSuccess) => {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response)=>response.json())
