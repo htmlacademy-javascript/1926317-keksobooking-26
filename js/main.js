@@ -6,7 +6,7 @@ import {setUserFormSubmit, getSuccessMessage, activateForm} from './form.js';
 import {getData} from './api.js';
 import {toFilteredMap} from './filter.js';
 import {debounce} from './util.js';
-import {loadFileAvatar, loadFilePhoto} from './avatar.js';
+import {loadMedia} from './avatar.js';
 const mapFilters = document.querySelector('.map__filters');
 const RERENDER_DELAY = 500;
 const VALUE_OF_OBJECT = 10;
@@ -22,5 +22,5 @@ getData ((data)=> {
 });
 
 setUserFormSubmit(getSuccessMessage);
-loadFileAvatar();
-loadFilePhoto();
+loadMedia();
+

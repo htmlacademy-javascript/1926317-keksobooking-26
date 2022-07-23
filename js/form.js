@@ -50,6 +50,10 @@ const words = {
     room: 'комнаты',
     guest: 'для 1 или 2 гостей'
   },
+  3: {
+    room: 'комнаты',
+    guest: 'для 1 или 3 гостей'
+  },
   100: {
     room: 'комнат',
     guest: 'не для гостей'
@@ -88,12 +92,13 @@ const getPriceErrorMessage = () => `не менее ${typeOfHousingPrice[typeOfH
 pristine.addValidator(price, validatePrice, getPriceErrorMessage);
 
 //проверка валидности "Количество комнат и количество мест"
-
+roomNumber.addEventListener('change', () => {
+  pristine.validate();
+});
 const validateCapacity = () => possibleCapacity[roomNumber.value].includes(capacityGuests.value);
 
 const getCapacityErrorMessage = () => `${roomNumber.value} ${words[roomNumber.value].room} ${words[roomNumber.value].guest}`;
 
-pristine.addValidator(roomNumber, validateCapacity);
 pristine.addValidator(capacityGuests, validateCapacity, getCapacityErrorMessage);
 
 // Время заезда/выезда
